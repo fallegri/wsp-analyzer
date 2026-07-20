@@ -11,5 +11,5 @@ export declare function getFullSentimentAnalysis(data: ConversationData): {
     date: string;
     participant: string;
     text: string;
-    sentiment: "negative" | "neutral" | "positive";
+    sentiment: "positive" | "negative" | "neutral";
 }[];

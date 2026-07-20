@@ -7,7 +7,7 @@ export interface IUser extends Document {
     createdAt: Date;
     comparePassword(candidate: string): Promise<boolean>;
 }
-export declare const User: mongoose.Model<IUser, {}, {}, {}, Document<unknown, {}, IUser, {}, mongoose.DefaultSchemaOptions> & IUser & Required<{
+export declare const User: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<unknown, {}, IUser, {}, mongoose.DefaultSchemaOptions> & IUser & Required<{
     _id: mongoose.Types.ObjectId;
 }> & {
     __v: number;

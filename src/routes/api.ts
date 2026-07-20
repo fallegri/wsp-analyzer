@@ -271,4 +271,12 @@ router.get('/conversation/:id/export/:format', requireAuth, async (req: Request,
   }
 });
 
+router.post('/test/no-mongo', async (req: Request, res: Response) => {
+  res.json({ ok: true, body: req.body, hasConnectDB: typeof connectDB });
+});
+router.post('/test/end', async (req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ ok: true }));
+});
+
 export default router;

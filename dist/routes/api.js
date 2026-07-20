@@ -254,4 +254,11 @@ router.get('/conversation/:id/export/:format', auth_1.requireAuth, async (req, r
         res.status(400).json({ error: 'Formato no soportado. Use json, csv o xlsx' });
     }
 });
+router.post('/test/no-mongo', async (req, res) => {
+    res.json({ ok: true, body: req.body, hasConnectDB: typeof mongodb_1.connectDB });
+});
+router.post('/test/end', async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: true }));
+});
 exports.default = router;

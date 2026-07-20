@@ -8,9 +8,11 @@ config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(express.static(path.join(process.cwd(), 'public')));
+if (!process.env.VERCEL) {
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+  app.use(express.static(path.join(process.cwd(), 'public')));
+}
 
 app.use('/api', apiRouter);
 

@@ -24,7 +24,7 @@
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.1",
-    "typescript": "^7.0.2"
+    "typescript": "~5.7.0"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -36,6 +36,6 @@
     "mongoose": "^9.7.4",
     "multer": "^2.2.0",
     "serverless-http": "^4.0.0",
-    "uuid": "^14.0.1"
+    "uuid": "^9.0.1"
   }
 }

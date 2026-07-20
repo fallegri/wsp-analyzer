@@ -87,28 +87,30 @@
       <button class="btn-link" onclick="doLogout()">Cerrar sesi&oacute;n</button>
     </div>
 
-    <div class="card" id="uploadCard">
-      <div class="upload-zone" id="dropZone">
-        <div class="upload-zone-icon">📁</div>
-        <div class="upload-zone-text">Arrastra tu archivo TXT aqu&iacute;</div>
-        <div class="upload-zone-subtext">o haz clic para seleccionar</div>
-        <input type="file" id="fileInput" accept=".txt">
+    <div id="authSection">
+      <div class="card" id="uploadCard">
+        <div class="upload-zone" id="dropZone">
+          <div class="upload-zone-icon">📁</div>
+          <div class="upload-zone-text">Arrastra tu archivo TXT aqu&iacute;</div>
+          <div class="upload-zone-subtext">o haz clic para seleccionar</div>
+          <input type="file" id="fileInput" accept=".txt">
+        </div>
+        <div class="file-info" id="fileInfo">
+          <span id="fileName"></span> &bull; <span id="fileSize"></span>
+        </div>
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="error" id="error"></div>
+        <button class="btn btn-primary" id="uploadBtn" disabled>Analizar conversaci&oacute;n</button>
       </div>
-      <div class="file-info" id="fileInfo">
-        <span id="fileName"></span> &bull; <span id="fileSize"></span>
-      </div>
-      <div class="progress-bar" id="progressBar">
-        <div class="progress-bar-fill" id="progressFill"></div>
-      </div>
-      <div class="error" id="error"></div>
-      <button class="btn btn-primary" id="uploadBtn" disabled>Analizar conversaci&oacute;n</button>
-    </div>
 
-    <div class="features">
-      <div class="feature-card"><div class="icon">📊</div><h3>Estad&iacute;sticas</h3><p>Mensajes, participantes, actividad</p></div>
-      <div class="feature-card"><div class="icon">😊</div><h3>Sentimientos</h3><p>An&aacute;lisis de emociones</p></div>
-      <div class="feature-card"><div class="icon">☁️</div><h3>Nube de palabras</h3><p>Palabras m&aacute;s usadas</p></div>
-      <div class="feature-card"><div class="icon">🔍</div><h3>B&uacute;squeda</h3><p>Filtra por palabras y fechas</p></div>
+      <div class="features">
+        <div class="feature-card"><div class="icon">📊</div><h3>Estad&iacute;sticas</h3><p>Mensajes, participantes, actividad</p></div>
+        <div class="feature-card"><div class="icon">😊</div><h3>Sentimientos</h3><p>An&aacute;lisis de emociones</p></div>
+        <div class="feature-card"><div class="icon">☁️</div><h3>Nube de palabras</h3><p>Palabras m&aacute;s usadas</p></div>
+        <div class="feature-card"><div class="icon">🔍</div><h3>B&uacute;squeda</h3><p>Filtra por palabras y fechas</p></div>
+      </div>
     </div>
   </div>
 
@@ -187,23 +189,26 @@
       window.location.reload();
     }
 
+    function setAuthVisibility(loggedIn) {
+      document.getElementById('authCard').classList.toggle('hidden', loggedIn);
+      document.getElementById('authSection').classList.toggle('hidden', !loggedIn);
+      document.getElementById('userBar').classList.toggle('hidden', !loggedIn);
+    }
+
     async function loadUser() {
       if (!token) {
-        document.getElementById('authCard').classList.remove('hidden');
-        document.getElementById('userBar').classList.add('hidden');
+        setAuthVisibility(false);
         return;
       }
       try {
         const user = await api('GET', '/auth/me');
-        document.getElementById('authCard').classList.add('hidden');
-        document.getElementById('userBar').classList.remove('hidden');
+        setAuthVisibility(true);
         document.getElementById('userName').textContent = user.name + ' (' + user.email + ')';
         document.getElementById('userRole').textContent = user.role === 'admin' ? 'Admin' : 'Usuario';
       } catch {
         localStorage.removeItem(TOKEN_KEY);
         token = null;
-        document.getElementById('authCard').classList.remove('hidden');
-        document.getElementById('userBar').classList.add('hidden');
+        setAuthVisibility(false);
       }
     }
 

@@ -10,7 +10,7 @@ export interface IConversation extends Document<string> {
     endDate: Date;
     createdAt: Date;
 }
-export declare const Conversation: mongoose.Model<IConversation, {}, {}, {}, Document<unknown, {}, IConversation, {}, mongoose.DefaultSchemaOptions> & IConversation & Required<{
+export declare const Conversation: mongoose.Model<IConversation, {}, {}, {}, mongoose.Document<unknown, {}, IConversation, {}, mongoose.DefaultSchemaOptions> & IConversation & Required<{
     _id: string;
 }> & {
     __v: number;
