@@ -1,0 +1,36 @@
+{
+  "contract_type": "all",
+  "contracts": [
+    {
+      "type": "pre-condition",
+      "description": "whatsapp-analyzer input validation",
+      "assertion": "require(input !== null && input !== undefined)"
+    },
+    {
+      "type": "pre-condition",
+      "description": "whatsapp-analyzer authorization check",
+      "assertion": "require(authorized === true)"
+    },
+    {
+      "type": "post-condition",
+      "description": "whatsapp-analyzer returns valid result",
+      "assertion": "ensure(result !== null)"
+    },
+    {
+      "type": "post-condition",
+      "description": "whatsapp-analyzer no side effects on error",
+      "assertion": "ensure(error === null || state_unchanged === true)"
+    },
+    {
+      "type": "invariant",
+      "description": "whatsapp-analyzer state consistency",
+      "assertion": "invariant(state.version >= 0)"
+    },
+    {
+      "type": "invariant",
+      "description": "whatsapp-analyzer data integrity",
+      "assertion": "invariant(checksum(data) === expected_checksum)"
+    }
+  ],
+  "generatedAt": "2026-07-19T18:37:24.208Z"
+}

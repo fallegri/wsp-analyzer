@@ -1,0 +1,36 @@
+{
+  "contract_type": "all",
+  "contracts": [
+    {
+      "type": "pre-condition",
+      "description": "backend-migration input validation",
+      "assertion": "require(input !== null && input !== undefined)"
+    },
+    {
+      "type": "pre-condition",
+      "description": "backend-migration authorization check",
+      "assertion": "require(authorized === true)"
+    },
+    {
+      "type": "post-condition",
+      "description": "backend-migration returns valid result",
+      "assertion": "ensure(result !== null)"
+    },
+    {
+      "type": "post-condition",
+      "description": "backend-migration no side effects on error",
+      "assertion": "ensure(error === null || state_unchanged === true)"
+    },
+    {
+      "type": "invariant",
+      "description": "backend-migration state consistency",
+      "assertion": "invariant(state.version >= 0)"
+    },
+    {
+      "type": "invariant",
+      "description": "backend-migration data integrity",
+      "assertion": "invariant(checksum(data) === expected_checksum)"
+    }
+  ],
+  "generatedAt": "2026-07-19T22:51:32.324Z"
+}

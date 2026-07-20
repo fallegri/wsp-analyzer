@@ -1,0 +1,32 @@
+[12/01/2024, 08:15:30] Alice: Buenos días! Cómo estás?
+[12/01/2024, 08:16:45] Bob: Muy bien! Excelente día hoy
+[12/01/2024, 08:17:00] Alice: Totalmente de acuerdo, el clima está hermoso
+[12/01/2024, 10:30:00] Bob: Oye, viste la película nueva?
+[12/01/2024, 10:31:15] Alice: Sí! Me pareció increíble, muy divertida
+[12/01/2024, 10:32:00] Bob: A mí me aburrió un poco la verdad
+[12/01/2024, 14:00:00] Alice: La cena de anoche estuvo fantástica
+[12/01/2024, 14:01:30] Bob: Sí, la comida excelente! Lástima que no pudiste quedarte más
+[12/02/2024, 09:00:00] Alice: Feliz cumpleaños! Que tengas un día maravilloso!
+[12/02/2024, 09:05:00] Bob: Muchas gracias! Eres muy amable :)
+[12/02/2024, 12:00:00] Alice: Te tengo una sorpresa!
+[12/02/2024, 12:01:00] Bob: ¿De verdad? Cuéntame!
+[12/02/2024, 18:30:00] Alice: Conseguí entradas para el concierto!
+[12/02/2024, 18:32:00] Bob: No puede ser! Es espectacular! Estoy muy feliz!
+[12/03/2024, 11:00:00] Bob: Todo salió mal hoy, estoy muy triste y enojado
+[12/03/2024, 11:02:00] Alice: Oh no, qué pasó? Cuéntame
+[12/03/2024, 11:05:00] Bob: Perdí el trabajo, es un desastre
+[12/03/2024, 11:10:00] Alice: Lo siento mucho, todo va a estar bien
+[12/03/2024, 15:00:00] Bob: Gracias por estar ahí, lo aprecio mucho
+[12/03/2024, 15:01:00] Alice: Siempre, para eso están los amigos
+[12/04/2024, 20:00:00] Alice: Mañana tenemos que terminar el proyecto
+[12/04/2024, 20:30:00] Bob: Sí, hay que trabajar duro pero va a ser un éxito
+[12/04/2024, 22:00:00] Alice: Mejor descansemos, mañana será un gran día
+[12/04/2024, 22:01:00] Bob: De acuerdo, buenas noches!
+[12/05/2024, 07:00:00] Alice: Buenos días! Hoy es el gran día!
+[12/05/2024, 08:00:00] Bob: Listo y motivado! Vamos a dar lo mejor
+[12/05/2024, 14:00:00] Alice: Lo logramos! Excelente trabajo en equipo!
+[12/05/2024, 14:01:00] Bob: Equipazo! Estoy muy orgulloso de nosotros
+[12/05/2024, 20:00:00] Alice: A celebrar! Nos vemos en el bar de siempre
+[12/05/2024, 20:30:00] Bob: Allá voy! Hoy se merece una gran fiesta
+[12/05/2024, 23:00:00] Alice: Jaja qué noche tan divertida!
+[12/05/2024, 23:30:00] Bob: Jeje no puedo dejar de reír! Increíble

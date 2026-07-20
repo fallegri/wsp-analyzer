@@ -1,0 +1,58 @@
+{
+  "action": "create",
+  "spec": {
+    "architecture": "Vercel Serverless Functions + MongoDB Atlas (NoSQL) + JWT Auth",
+    "summary": "Migrar la app Express actual a Vercel como serverless functions, reemplazar almacenamiento en memoria por MongoDB Atlas con Mongoose, agregar módulo de usuarios con autenticación JWT, hash de archivos, e índices para rendimiento.",
+    "changes": [
+      {
+        "file": "src/routes/api.ts",
+        "description": "Adaptar rutas Express para usar MongoDB y autenticación JWT"
+      },
+      {
+        "file": "src/services/conversation-store.ts",
+        "description": "Reemplazar almacenamiento en memoria por Mongoose models"
+      },
+      {
+        "new": "src/lib/mongodb.ts",
+        "description": "Conexión a MongoDB Atlas con Mongoose"
+      },
+      {
+        "new": "src/lib/auth.ts",
+        "description": "Middleware JWT y helpers de autenticación"
+      },
+      {
+        "new": "src/lib/hash.ts",
+        "description": "Utilidad para SHA-256 hash de archivos"
+      },
+      {
+        "new": "src/models/User.ts",
+        "description": "Modelo Mongoose de usuario con roles"
+      },
+      {
+        "new": "src/models/Conversation.ts",
+        "description": "Modelo Mongoose de conversación"
+      },
+      {
+        "new": "src/models/Message.ts",
+        "description": "Modelo Mongoose de mensaje indexado"
+      },
+      {
+        "new": "api/index.js",
+        "description": "Entry point serverless para Vercel"
+      },
+      {
+        "new": "vercel.json",
+        "description": "Configuración de deploy Vercel"
+      },
+      {
+        "modified": "src/index.ts",
+        "description": "Remover server.listen, exportar app para serverless"
+      },
+      {
+        "modified": "package.json",
+        "description": "Agregar dependencias y scripts"
+      }
+    ]
+  },
+  "updated": "2026-07-19T22:51:20.622Z"
+}

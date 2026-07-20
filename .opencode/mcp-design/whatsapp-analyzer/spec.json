@@ -1,0 +1,68 @@
+{
+  "action": "create",
+  "spec": {
+    "name": "WhatsApp Analyzer",
+    "description": "Aplicación web para analizar conversaciones exportadas de WhatsApp (formato TXT). Procesa el archivo, extrae mensajes, metadatos y genera estadísticas visuales.",
+    "language": "typescript",
+    "framework": "express",
+    "frontend": "html+css+js (vanilla or ejs)",
+    "features": [
+      "estadisticas-generales",
+      "analisis-participacion",
+      "busqueda-filtros",
+      "graficos-visualizaciones",
+      "exportar-reportes",
+      "nube-de-palabras",
+      "analisis-sentimientos"
+    ],
+    "interfaces": [
+      {
+        "name": "POST /api/upload",
+        "description": "Subir archivo TXT de conversación WhatsApp",
+        "input": "multipart/form-data (archivo .txt)",
+        "output": "{ success, conversationId, participants, messageCount, dateRange }"
+      },
+      {
+        "name": "GET /api/conversation/:id/stats",
+        "description": "Obtener estadísticas generales de la conversación",
+        "output": "{ totalMessages, totalParticipants, dateRange, messagesPerDay, messagesPerHour, ... }"
+      },
+      {
+        "name": "GET /api/conversation/:id/participants",
+        "description": "Análisis de participación por usuario",
+        "output": "[{ participant, messageCount, wordCount, avgMessageLength, firstMessage, lastMessage, ... }]"
+      },
+      {
+        "name": "GET /api/conversation/:id/search",
+        "description": "Buscar mensajes por palabra clave, fecha o usuario",
+        "input": "query params: q, participant, fromDate, toDate, page, limit",
+        "output": "{ results: [...], total, page, totalPages }"
+      },
+      {
+        "name": "GET /api/conversation/:id/wordcloud",
+        "description": "Obtener datos para nube de palabras",
+        "output": "[{ word, count }]"
+      },
+      {
+        "name": "GET /api/conversation/:id/sentiment",
+        "description": "Análisis de sentimientos por mensaje y participante",
+        "output": "{ overall: { positive, negative, neutral }, perParticipant: [...], timeline: [...] }"
+      },
+      {
+        "name": "GET /api/conversation/:id/export/:format",
+        "description": "Exportar reporte en formato CSV o JSON",
+        "input": "format: 'csv' | 'json'",
+        "output": "archivo descargable"
+      },
+      {
+        "name": "GET /",
+        "description": "Página principal con interfaz de upload"
+      },
+      {
+        "name": "GET /conversation/:id",
+        "description": "Dashboard visual de la conversación"
+      }
+    ]
+  },
+  "updated": "2026-07-19T18:37:16.353Z"
+}

@@ -1,0 +1,150 @@
+{
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "Inicializar proyecto",
+      "description": "npm init, TypeScript config, instalar express, multer, uuid, chart.js, instalar tipos",
+      "estimated_hours": 1,
+      "depends_on": []
+    },
+    {
+      "id": "TASK-002",
+      "title": "Estructura de directorios",
+      "description": "Crear src/: parser/, routes/, services/, public/, views/",
+      "estimated_hours": 0.5,
+      "depends_on": [
+        "TASK-001"
+      ]
+    },
+    {
+      "id": "TASK-003",
+      "title": "Parser de WhatsApp",
+      "description": "Implementar WhatsAppParser con regex para formatos de fecha: [DD/MM/AAAA HH:MM] Nombre: mensaje y variantes en ingles",
+      "estimated_hours": 3,
+      "depends_on": [
+        "TASK-002"
+      ]
+    },
+    {
+      "id": "TASK-004",
+      "title": "Servicio de almacenamiento",
+      "description": "Implementar ConversationStore en memoria con Map<id, ConversationData>",
+      "estimated_hours": 1,
+      "depends_on": [
+        "TASK-002"
+      ]
+    },
+    {
+      "id": "TASK-005",
+      "title": "Servicio de estadisticas",
+      "description": "Implementar StatsService: calculo de metricas, participacion, actividad temporal",
+      "estimated_hours": 2,
+      "depends_on": [
+        "TASK-003",
+        "TASK-004"
+      ]
+    },
+    {
+      "id": "TASK-006",
+      "title": "Servicio de busqueda",
+      "description": "Implementar SearchService: filtro por palabra, usuario, fecha con paginacion",
+      "estimated_hours": 1.5,
+      "depends_on": [
+        "TASK-003",
+        "TASK-004"
+      ]
+    },
+    {
+      "id": "TASK-007",
+      "title": "Servicio de nube de palabras",
+      "description": "Implementar WordCloudService: tokenizacion, filtrado stopwords, conteo de frecuencias",
+      "estimated_hours": 1.5,
+      "depends_on": [
+        "TASK-003",
+        "TASK-004"
+      ]
+    },
+    {
+      "id": "TASK-008",
+      "title": "Servicio de analisis de sentimientos",
+      "description": "Implementar SentimentService con diccionarios de palabras positivas/negativas en espanol e ingles",
+      "estimated_hours": 2,
+      "depends_on": [
+        "TASK-003",
+        "TASK-004"
+      ]
+    },
+    {
+      "id": "TASK-009",
+      "title": "Servicio de exportacion",
+      "description": "Implementar ExportService: generar CSV y JSON a partir de los datos de conversacion",
+      "estimated_hours": 1.5,
+      "depends_on": [
+        "TASK-005",
+        "TASK-006",
+        "TASK-007",
+        "TASK-008"
+      ]
+    },
+    {
+      "id": "TASK-010",
+      "title": "Routes API",
+      "description": "Implementar todas las rutas REST conectando servicios",
+      "estimated_hours": 2,
+      "depends_on": [
+        "TASK-005",
+        "TASK-006",
+        "TASK-007",
+        "TASK-008",
+        "TASK-009"
+      ]
+    },
+    {
+      "id": "TASK-011",
+      "title": "Frontend - Upload page",
+      "description": "Pagina HTML con formulario de subida de archivo, barra de progreso, vista previa",
+      "estimated_hours": 2,
+      "depends_on": [
+        "TASK-010"
+      ]
+    },
+    {
+      "id": "TASK-012",
+      "title": "Frontend - Dashboard",
+      "description": "Dashboard con graficos usando Chart.js: actividad diaria, participacion, sentimientos",
+      "estimated_hours": 3,
+      "depends_on": [
+        "TASK-011"
+      ]
+    },
+    {
+      "id": "TASK-013",
+      "title": "Frontend - Nube de palabras",
+      "description": "Componente de nube de palabras interactiva",
+      "estimated_hours": 1.5,
+      "depends_on": [
+        "TASK-012"
+      ]
+    },
+    {
+      "id": "TASK-014",
+      "title": "Frontend - Busqueda y exportacion",
+      "description": "Interfaz de busqueda con resultados y botones de exportacion",
+      "estimated_hours": 1.5,
+      "depends_on": [
+        "TASK-012"
+      ]
+    },
+    {
+      "id": "TASK-015",
+      "title": "Pruebas y refinamiento",
+      "description": "Probar con archivos reales de WhatsApp, corregir errores, mejorar UX",
+      "estimated_hours": 2,
+      "depends_on": [
+        "TASK-013",
+        "TASK-014"
+      ]
+    }
+  ],
+  "updated": "2026-07-19T18:37:37.628Z"
+}

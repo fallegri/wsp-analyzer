@@ -1,0 +1,70 @@
+{
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "Instalar dependencias",
+      "description": "npm install mongoose bcryptjs jsonwebtoken dotenv @types/bcryptjs @types/jsonwebtoken"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Crear conexión MongoDB",
+      "description": "src/lib/mongodb.ts con manejo de conexión singleton usando process.env.MONGODB_URI"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Crear modelo User",
+      "description": "src/models/User.ts con campos: email, password (hasheado), name, role (admin|pending|user), createdAt. Índice único en email."
+    },
+    {
+      "id": "TASK-004",
+      "title": "Crear modelo Conversation",
+      "description": "src/models/Conversation.ts con campos: userId, fileName, fileHash, participantCount, messageCount, dateRange, createdAt. Índice en userId."
+    },
+    {
+      "id": "TASK-005",
+      "title": "Crear modelo Message",
+      "description": "src/models/Message.ts con campos: conversationId, date, participant, text, isSystem. Índices compuestos: (conversationId, date), (conversationId, participant), text index."
+    },
+    {
+      "id": "TASK-006",
+      "title": "Crear módulo auth",
+      "description": "src/lib/auth.ts: generar/verificar JWT, middleware requireAuth, helper adminOnly"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Crear utilidad hash",
+      "description": "src/lib/hash.ts: función sha256(content: string): string usando crypto"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Crear endpoints de auth",
+      "description": "POST /api/auth/register, POST /api/auth/login, GET /api/auth/me, GET /api/auth/pending-users (admin), PUT /api/auth/approve/:id (admin)"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Adaptar upload a MongoDB",
+      "description": "POST /api/upload con memoryStorage, sha256 hash, guardar Conversation + Messages en MongoDB, devolver conversationId"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Adaptar servicios a MongoDB",
+      "description": "Reemplazar ConversationStore.get() por consultas MongoDB en stats, participants, search, wordcloud, sentiment, topics, export"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Agregar auth middleware a rutas",
+      "description": "Proteger todas las rutas /api/conversation/* con requireAuth"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Configurar Vercel",
+      "description": "Crear vercel.json con rewrites, api/index.ts como entry point serverless usando serverless-http"
+    },
+    {
+      "id": "TASK-013",
+      "title": "Agregar variables de entorno",
+      "description": "Configurar .env.example, agregar dotenv, variables: MONGODB_URI, JWT_SECRET, UPLOAD_MAX_SIZE"
+    }
+  ],
+  "updated": "2026-07-19T22:51:46.165Z"
+}

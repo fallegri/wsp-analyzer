@@ -1,0 +1,83 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "description": "El sistema debe permitir subir un archivo TXT exportado de WhatsApp",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-002",
+      "description": "El sistema debe parsear correctamente el formato de exportacion de WhatsApp (fechas, remitente, mensaje)",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-003",
+      "description": "El sistema debe soportar formatos de fecha en español e ingles",
+      "type": "functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-004",
+      "description": "El sistema debe mostrar estadisticas generales: total mensajes, participantes, rango de fechas",
+      "type": "functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-005",
+      "description": "El sistema debe analizar la participacion por usuario: mensajes enviados, palabras, hora mas activa",
+      "type": "functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-006",
+      "description": "El sistema debe permitir buscar mensajes por palabra clave, usuario y rango de fechas",
+      "type": "functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-007",
+      "description": "El sistema debe generar una nube de palabras con las palabras mas frecuentes",
+      "type": "functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-008",
+      "description": "El sistema debe realizar analisis de sentimientos basico (positivo, negativo, neutral) sobre los mensajes",
+      "type": "functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-009",
+      "description": "El sistema debe mostrar graficos y visualizaciones de los datos procesados",
+      "type": "functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-010",
+      "description": "El sistema debe permitir exportar los resultados a CSV y JSON",
+      "type": "functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-011",
+      "description": "La aplicacion debe ser responsive y funcionar en navegadores modernos",
+      "type": "non-functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-012",
+      "description": "El procesamiento de archivos debe ser rapido incluso con conversaciones de mas de 10000 mensajes",
+      "type": "non-functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-013",
+      "description": "Los datos de la conversacion deben almacenarse en memoria o archivo temporal (no requiere base de datos persistente)",
+      "type": "non-functional",
+      "priority": "medium"
+    }
+  ],
+  "updated": "2026-07-19T18:37:21.546Z"
+}

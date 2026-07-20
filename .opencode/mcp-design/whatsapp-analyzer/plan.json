@@ -1,0 +1,52 @@
+{
+  "phases": [
+    {
+      "name": "Fase 1: Proyecto base",
+      "description": "Inicializar proyecto Node.js/TypeScript con Express, configurar estructura de directorios, dependencias",
+      "estimated_hours": 2,
+      "dependencies": []
+    },
+    {
+      "name": "Fase 2: Parser WhatsApp",
+      "description": "Implementar el parser de archivos TXT exportados de WhatsApp. Soporte para formatos de fecha español e ingles",
+      "estimated_hours": 4,
+      "dependencies": [
+        "Fase 1: Proyecto base"
+      ]
+    },
+    {
+      "name": "Fase 3: API REST",
+      "description": "Implementar endpoints REST: upload, stats, participants, search, wordcloud, sentiment, export",
+      "estimated_hours": 6,
+      "dependencies": [
+        "Fase 2: Parser WhatsApp"
+      ]
+    },
+    {
+      "name": "Fase 4: Frontend - Upload y Dashboard",
+      "description": "Crear interfaz web: pagina de upload, dashboard con estadisticas, graficos (Chart.js), nube de palabras",
+      "estimated_hours": 8,
+      "dependencies": [
+        "Fase 3: API REST"
+      ]
+    },
+    {
+      "name": "Fase 5: Analisis de sentimientos",
+      "description": "Implementar analisis de sentimientos basado en diccionario de palabras positivas/negativas en espanol/ingles",
+      "estimated_hours": 3,
+      "dependencies": [
+        "Fase 2: Parser WhatsApp"
+      ]
+    },
+    {
+      "name": "Fase 6: Exportacion y refinamiento",
+      "description": "Implementar exportacion CSV/JSON, pulir UI, manejo de errores, pruebas",
+      "estimated_hours": 3,
+      "dependencies": [
+        "Fase 4: Frontend - Upload y Dashboard"
+      ]
+    }
+  ],
+  "architecture": "Aplicacion web monolítica con Express + TypeScript. El frontend sera servido como archivos estaticos (HTML/CSS/JS) con Chart.js para graficos. Los datos se almacenan en memoria (Map) con sesion por ID de conversacion. El parser usa expresiones regulares para los distintos formatos de fecha de WhatsApp.",
+  "updated": "2026-07-19T18:37:29.429Z"
+}

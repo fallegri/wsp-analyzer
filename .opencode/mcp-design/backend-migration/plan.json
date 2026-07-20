@@ -1,0 +1,51 @@
+{
+  "phases": [
+    {
+      "name": "Base de datos y modelos",
+      "description": "Instalar dependencias (mongoose, bcryptjs, jsonwebtoken), crear conexión MongoDB, modelos User/Conversation/Message con índices",
+      "estimated_hours": 2,
+      "dependencies": []
+    },
+    {
+      "name": "Autenticación y usuarios",
+      "description": "Crear módulo auth (JWT middleware, hash), endpoints register/login/me/profile, lógica de primer usuario admin y aprobación",
+      "estimated_hours": 2,
+      "dependencies": [
+        "Base de datos y modelos"
+      ]
+    },
+    {
+      "name": "Adaptar servicios a MongoDB",
+      "description": "Reemplazar ConversationStore (Map) por operaciones MongoDB en todos los servicios: stats, search, wordcloud, sentiment, topics, export",
+      "estimated_hours": 3,
+      "dependencies": [
+        "Base de datos y modelos"
+      ]
+    },
+    {
+      "name": "Upload y hash",
+      "description": "Cambiar multer a memoryStorage, generar SHA-256 hash del archivo, guardar conversación y mensajes en MongoDB",
+      "estimated_hours": 1.5,
+      "dependencies": [
+        "Adaptar servicios a MongoDB"
+      ]
+    },
+    {
+      "name": "Serverless y Vercel",
+      "description": "Configurar vercel.json, crear api/index.ts como entry point serverless, ajustar index.ts para exportar app, agregar dotenv para variables de entorno",
+      "estimated_hours": 1.5,
+      "dependencies": [
+        "Upload y hash"
+      ]
+    },
+    {
+      "name": "Pruebas y deploy",
+      "description": "Probar todo el flujo localmente con vercel dev, hacer deploy a Vercel, configurar variables de entorno en dashboard de Vercel",
+      "estimated_hours": 1,
+      "dependencies": [
+        "Serverless y Vercel"
+      ]
+    }
+  ],
+  "updated": "2026-07-19T22:51:38.234Z"
+}

@@ -1,0 +1,71 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "description": "Módulo de usuarios con registro, login JWT y roles (admin/user)",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-002",
+      "description": "El primer usuario registrado obtiene rol admin automáticamente",
+      "type": "functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-003",
+      "description": "Nuevos usuarios requieren aprobación de un admin para activarse",
+      "type": "functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-004",
+      "description": "Todos los endpoints API requieren token JWT válido excepto register y login",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-005",
+      "description": "Almacenamiento persistente en MongoDB Atlas usando Mongoose",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-006",
+      "description": "Hash SHA-256 de cada archivo subido almacenado con la conversación",
+      "type": "functional",
+      "priority": "medium"
+    },
+    {
+      "id": "REQ-007",
+      "description": "Índices compuestos en MongoDB para búsqueda rápida de mensajes por conversationId + fecha, conversationId + participante, y texto",
+      "type": "non-functional",
+      "priority": "high"
+    },
+    {
+      "id": "REQ-008",
+      "description": "Adaptar upload para usar memoryStorage de multer en lugar de diskStorage",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-009",
+      "description": "Deploy a Vercel como serverless functions con vercel.json",
+      "type": "functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-010",
+      "description": "Las contraseñas se almacenan hasheadas con bcryptjs",
+      "type": "non-functional",
+      "priority": "critical"
+    },
+    {
+      "id": "REQ-011",
+      "description": "Mantener funcionalidad existente: stats, participantes, sentimientos, tópicos, nube de palabras, búsqueda, export",
+      "type": "functional",
+      "priority": "critical"
+    }
+  ],
+  "updated": "2026-07-19T22:51:27.994Z"
+}
