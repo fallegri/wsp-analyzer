@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
+import rateLimit from 'express-rate-limit';
 import { v4 as uuidv4 } from 'uuid';
 import { parseWhatsApp } from '../parser/whatsapp-parser';
 import { ConversationStore } from '../services/conversation-store';
@@ -19,6 +20,14 @@ import { sha256 } from '../lib/hash';
 
 const router = Router();
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 },
@@ -33,12 +42,15 @@ const upload = multer({
 
 // --- Auth routes ---
 
-router.post('/auth/register', async (req: Request, res: Response) => {
+router.post('/auth/register', authLimiter, async (req: Request, res: Response) => {
   try {
     await connectDB();
     const { email, password, name } = req.body;
     if (!email || !password || !name) {
       return res.status(400).json({ error: 'Email, password y name son requeridos' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
     }
 
     const existing = await User.findOne({ email: email.toLowerCase() });
@@ -59,7 +71,7 @@ router.post('/auth/register', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/auth/login', async (req: Request, res: Response) => {
+router.post('/auth/login', authLimiter, async (req: Request, res: Response) => {
   try {
     await connectDB();
     const { email, password } = req.body;
@@ -73,7 +85,7 @@ router.post('/auth/login', async (req: Request, res: Response) => {
     }
 
     if (user.role === 'pending') {
-      return res.status(403).json({ error: 'Tu cuenta está pendiente de aprobación por un administrador' });
+      return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
     const valid = await user.comparePassword(password);
@@ -124,7 +136,11 @@ router.post('/upload', requireAuth, (req: Request, res: Response) => {
     }
 
     try {
-      const content = req.file.buffer.toString('utf-8');
+      const buf = req.file.buffer;
+      if (buf.length < 4 || buf[0] === 0x00) {
+        return res.status(400).json({ success: false, error: 'El archivo no parece ser un archivo de texto válido' });
+      }
+      const content = buf.toString('utf-8');
       const messages = parseWhatsApp(content);
 
       if (messages.length === 0) {
@@ -269,14 +285,6 @@ router.get('/conversation/:id/export/:format', requireAuth, async (req: Request,
   } else {
     res.status(400).json({ error: 'Formato no soportado. Use json, csv o xlsx' });
   }
-});
-
-router.post('/test/no-mongo', async (req: Request, res: Response) => {
-  res.json({ ok: true, body: req.body, hasConnectDB: typeof connectDB });
-});
-router.post('/test/end', async (req: Request, res: Response) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({ ok: true }));
 });
 
 export default router;

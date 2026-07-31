@@ -13,11 +13,9 @@
     .header h1 { font-size: 2.2em; color: #075e54; margin-bottom: 8px; }
     .header p { color: #667781; font-size: 1.1em; }
     .card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); text-align: center; margin-bottom: 24px; }
-    .card.hidden { display: none; }
-    .auth-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
-    .auth-tab { padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; background: #e0e0e0; color: #555; transition: all 0.2s; }
-    .auth-tab.active { background: #075e54; color: white; }
     .auth-form { max-width: 360px; margin: 0 auto; }
+    .auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    @media (max-width: 640px) { .auth-grid { grid-template-columns: 1fr; } }
     .auth-form input { display: block; width: 100%; padding: 12px 16px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95em; }
     .auth-form input:focus { outline: none; border-color: #075e54; }
     .auth-error { color: #d32f2f; font-size: 0.9em; margin: 8px 0; display: none; }
@@ -27,6 +25,9 @@
     .user-role { font-size: 0.8em; background: #e8f5f3; color: #075e54; padding: 2px 10px; border-radius: 10px; }
     .btn-link { background: none; border: none; color: #075e54; cursor: pointer; font-weight: 600; font-size: 0.9em; }
     .btn-link:hover { text-decoration: underline; }
+    .user-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-outline { display: inline-block; padding: 8px 20px; border: 1px solid #075e54; border-radius: 8px; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 0; color: #075e54; background: white; }
+    .btn-outline:hover { background: #075e54; color: white; }
     .upload-zone { border: 2px dashed #ccc; border-radius: 12px; padding: 48px 24px; cursor: pointer; transition: all 0.3s; position: relative; }
     .upload-zone:hover, .upload-zone.dragover { border-color: #075e54; background: #f0faf9; }
     .upload-zone.has-file { border-color: #075e54; background: #f0faf9; }
@@ -59,23 +60,25 @@
       <p>Analiza tus conversaciones exportadas de WhatsApp</p>
     </div>
 
-    <div class="card" id="authCard">
-      <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('login')">Iniciar sesi&oacute;n</button>
-        <button class="auth-tab" onclick="switchAuthTab('register')">Registrarse</button>
+    <div class="auth-grid" id="authCard">
+      <div class="card">
+        <h2 style="margin-bottom:16px;text-align:center;color:#075e54">Iniciar sesi&oacute;n</h2>
+        <div class="auth-form">
+          <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+          <input type="password" id="loginPassword" placeholder="Contrase&ntilde;a" autocomplete="current-password">
+          <div class="auth-error" id="loginError"></div>
+          <button class="btn btn-primary" onclick="doLogin()" style="width:100%">Ingresar</button>
+        </div>
       </div>
-      <div class="auth-form" id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
-        <input type="password" id="loginPassword" placeholder="Contrase&ntilde;a" autocomplete="current-password">
-        <div class="auth-error" id="loginError"></div>
-        <button class="btn btn-primary" onclick="doLogin()" style="width:100%">Ingresar</button>
-      </div>
-      <div class="auth-form hidden" id="registerForm">
-        <input type="text" id="regName" placeholder="Nombre completo" autocomplete="name">
-        <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
-        <input type="password" id="regPassword" placeholder="Contrase&ntilde;a (m&iacute;n 6 caracteres)" autocomplete="new-password">
-        <div class="auth-error" id="regError"></div>
-        <button class="btn btn-primary" onclick="doRegister()" style="width:100%">Crear cuenta</button>
+      <div class="card">
+        <h2 style="margin-bottom:16px;text-align:center;color:#075e54">Crear cuenta</h2>
+        <div class="auth-form">
+          <input type="text" id="regName" placeholder="Nombre completo" autocomplete="name">
+          <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
+          <input type="password" id="regPassword" placeholder="Contrase&ntilde;a (m&iacute;n 6 caracteres)" autocomplete="new-password">
+          <div class="auth-error" id="regError"></div>
+          <button class="btn btn-primary" onclick="doRegister()" style="width:100%">Crear cuenta</button>
+        </div>
       </div>
     </div>
 
@@ -84,7 +87,9 @@
         <span id="userName"></span>
         <span class="user-role" id="userRole"></span>
       </div>
-      <button class="btn-link" onclick="doLogout()">Cerrar sesi&oacute;n</button>
+      <div class="user-actions">
+        <button class="btn btn-outline" onclick="doLogout()">Salir</button>
+      </div>
     </div>
 
     <div id="authSection">
@@ -129,16 +134,10 @@
       const opts = { method, headers: getHeaders() };
       if (body) opts.body = JSON.stringify(body);
       const res = await fetch(API + path, opts);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error de conexión');
+      let data;
+      try { data = await res.json(); } catch { data = {}; }
+      if (!res.ok) throw new Error(data.error || 'Error del servidor');
       return data;
-    }
-
-    function switchAuthTab(tab) {
-      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.auth-form').forEach(f => f.classList.add('hidden'));
-      document.getElementById(tab + 'Form').classList.remove('hidden');
-      document.querySelector(`.auth-tab[onclick*="${tab}"]`).classList.add('active');
     }
 
     function showAuthError(id, msg) {
@@ -190,9 +189,9 @@
     }
 
     function setAuthVisibility(loggedIn) {
-      document.getElementById('authCard').classList.toggle('hidden', loggedIn);
-      document.getElementById('authSection').classList.toggle('hidden', !loggedIn);
-      document.getElementById('userBar').classList.toggle('hidden', !loggedIn);
+      document.getElementById('authCard').style.display = loggedIn ? 'none' : '';
+      document.getElementById('authSection').style.display = loggedIn ? '' : 'none';
+      document.getElementById('userBar').style.display = loggedIn ? '' : 'none';
     }
 
     async function loadUser() {

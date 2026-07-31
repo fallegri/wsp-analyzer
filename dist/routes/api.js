@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const multer_1 = __importDefault(require("multer"));
+const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const uuid_1 = require("uuid");
 const whatsapp_parser_1 = require("../parser/whatsapp-parser");
 const conversation_store_1 = require("../services/conversation-store");
@@ -19,6 +20,13 @@ const User_1 = require("../models/User");
 const auth_1 = require("../lib/auth");
 const hash_1 = require("../lib/hash");
 const router = (0, express_1.Router)();
+const authLimiter = (0, express_rate_limit_1.default)({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 const upload = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
     limits: { fileSize: 50 * 1024 * 1024 },
@@ -32,12 +40,15 @@ const upload = (0, multer_1.default)({
     },
 });
 // --- Auth routes ---
-router.post('/auth/register', async (req, res) => {
+router.post('/auth/register', authLimiter, async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { email, password, name } = req.body;
         if (!email || !password || !name) {
             return res.status(400).json({ error: 'Email, password y name son requeridos' });
+        }
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
         }
         const existing = await User_1.User.findOne({ email: email.toLowerCase() });
         if (existing) {
@@ -54,7 +65,7 @@ router.post('/auth/register', async (req, res) => {
         res.status(500).json({ error: 'Error al registrar usuario' });
     }
 });
-router.post('/auth/login', async (req, res) => {
+router.post('/auth/login', authLimiter, async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { email, password } = req.body;
@@ -66,7 +77,7 @@ router.post('/auth/login', async (req, res) => {
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
         if (user.role === 'pending') {
-            return res.status(403).json({ error: 'Tu cuenta está pendiente de aprobación por un administrador' });
+            return res.status(401).json({ error: 'Credenciales inválidas' });
         }
         const valid = await user.comparePassword(password);
         if (!valid) {
@@ -111,7 +122,11 @@ router.post('/upload', auth_1.requireAuth, (req, res) => {
             return res.status(400).json({ success: false, error: 'No se ha subido ningun archivo' });
         }
         try {
-            const content = req.file.buffer.toString('utf-8');
+            const buf = req.file.buffer;
+            if (buf.length < 4 || buf[0] === 0x00) {
+                return res.status(400).json({ success: false, error: 'El archivo no parece ser un archivo de texto válido' });
+            }
+            const content = buf.toString('utf-8');
             const messages = (0, whatsapp_parser_1.parseWhatsApp)(content);
             if (messages.length === 0) {
                 return res.status(400).json({ success: false, error: 'No se pudieron extraer mensajes del archivo. Verifica que sea una exportacion valida de WhatsApp.' });
@@ -253,12 +268,5 @@ router.get('/conversation/:id/export/:format', auth_1.requireAuth, async (req, r
     else {
         res.status(400).json({ error: 'Formato no soportado. Use json, csv o xlsx' });
     }
-});
-router.post('/test/no-mongo', async (req, res) => {
-    res.json({ ok: true, body: req.body, hasConnectDB: typeof mongodb_1.connectDB });
-});
-router.post('/test/end', async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: true }));
 });
 exports.default = router;

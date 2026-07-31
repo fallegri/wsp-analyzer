@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import helmet from 'helmet';
 import apiRouter from './routes/api';
 import { config } from 'dotenv';
 
@@ -7,6 +8,11 @@ config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false,
+}));
 
 if (!process.env.VERCEL) {
   app.use(express.json({ limit: '50mb' }));

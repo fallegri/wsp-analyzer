@@ -228,6 +228,12 @@
       window.location.href = '/';
     }
 
+    function sanitize(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
     function authHeaders() {
       return { 'Authorization': 'Bearer ' + token };
     }
@@ -319,7 +325,7 @@
       const body = document.getElementById('participantsBody');
       body.innerHTML = participantsData.map((p, i) => {
         const barWidth = (p.messageCount / participantsData[0].messageCount * 100);
-        return '<tr><td class="rank">' + (i + 1) + '</td><td><strong>' + p.participant + '</strong></td><td>' + p.messageCount + '</td><td>' + p.wordCount.toLocaleString() + '</td><td>' + p.avgMessageLength + ' char</td><td><div style="height:8px;background:#e0e0e0;border-radius:4px;width:120px"><div style="height:8px;background:#075e54;border-radius:4px;width:' + barWidth + '%"></div></div></td></tr>';
+        return '<tr><td class="rank">' + (i + 1) + '</td><td><strong>' + sanitize(p.participant) + '</strong></td><td>' + p.messageCount + '</td><td>' + p.wordCount.toLocaleString() + '</td><td>' + p.avgMessageLength + ' char</td><td><div style="height:8px;background:#e0e0e0;border-radius:4px;width:120px"><div style="height:8px;background:#075e54;border-radius:4px;width:' + barWidth + '%"></div></div></td></tr>';
       }).join('');
     }
 
@@ -374,7 +380,7 @@
         document.getElementById('modalBody').innerHTML = msgs.map(m => {
           const d = new Date(m.date);
           const ds = d.toLocaleDateString('es-ES') + ' ' + d.toLocaleTimeString('es-ES', {hour:'2-digit',minute:'2-digit'});
-          return '<div class="modal-msg"><span class="mm-participant">' + m.participant + '</span><span class="mm-date">' + ds + '</span><div class="mm-text">' + m.text + '</div></div>';
+          return '<div class="modal-msg"><span class="mm-participant">' + sanitize(m.participant) + '</span><span class="mm-date">' + ds + '</span><div class="mm-text">' + sanitize(m.text) + '</div></div>';
         }).join('');
       } catch (err) {
         document.getElementById('modalBody').innerHTML = '<p style="color:#d32f2f;text-align:center">Error al cargar mensajes</p>';
@@ -407,13 +413,13 @@
         container.innerHTML = topics.map(t => {
           const sentClass = t.sentiment.startsWith('positivo') ? 'positivo' : t.sentiment.startsWith('negativo') ? 'negativo' : 'neutral';
           return '<div class="topic-card">' +
-            '<div class="topic-header"><h3>' + t.name + ' <span style="font-weight:400;color:#888;font-size:0.85em">(' + t.messageCount + ' mensajes)</span></h3><span class="topic-sentiment ' + sentClass + '">' + t.sentiment + '</span></div>' +
-            '<div class="topic-keywords">' + t.keywords.map(k => '<span class="topic-keyword">' + k + '</span>').join('') + '</div>' +
+            '<div class="topic-header"><h3>' + sanitize(t.name) + ' <span style="font-weight:400;color:#888;font-size:0.85em">(' + t.messageCount + ' mensajes)</span></h3><span class="topic-sentiment ' + sentClass + '">' + sanitize(t.sentiment) + '</span></div>' +
+            '<div class="topic-keywords">' + t.keywords.map(k => '<span class="topic-keyword">' + sanitize(k) + '</span>').join('') + '</div>' +
             '<div style="max-height:300px;overflow-y:auto">' +
             t.messages.slice(0, 15).map(m => {
               const d = new Date(m.date);
               const ds = d.toLocaleDateString('es-ES') + ' ' + d.toLocaleTimeString('es-ES', {hour:'2-digit',minute:'2-digit'});
-              return '<div class="topic-msg"><span class="tm-participant">' + m.participant + '</span> <span class="tm-date">' + ds + '</span><div class="tm-text">' + m.text + '</div></div>';
+              return '<div class="topic-msg"><span class="tm-participant">' + sanitize(m.participant) + '</span> <span class="tm-date">' + ds + '</span><div class="tm-text">' + sanitize(m.text) + '</div></div>';
             }).join('') +
             (t.messages.length > 15 ? '<p style="text-align:center;color:#888;padding:8px;font-size:0.85em">... y ' + (t.messages.length - 15) + ' mensajes m&aacute;s</p>' : '') +
             '</div></div>';
@@ -431,7 +437,7 @@
         const container = document.getElementById('wordcloudContainer');
         if (data.length === 0) { container.innerHTML = '<p style="color:#888">No hay suficientes palabras</p>'; return; }
         const maxCount = data[0].count;
-        container.innerHTML = data.map(w => '<span style="font-size:' + (12 + (w.count / maxCount) * 40) + 'px;opacity:' + (0.4 + (w.count / maxCount) * 0.6) + ';color:#075e54;cursor:default" title="' + w.count + ' veces">' + w.word + '</span>').join('');
+        container.innerHTML = data.map(w => '<span style="font-size:' + (12 + (w.count / maxCount) * 40) + 'px;opacity:' + (0.4 + (w.count / maxCount) * 0.6) + ';color:#075e54;cursor:default" title="' + w.count + ' veces">' + sanitize(w.word) + '</span>').join('');
       } catch (err) {
         document.getElementById('wordcloudContainer').innerHTML = '<p style="color:#d32f2f">Error al cargar nube de palabras</p>';
       }
@@ -441,7 +447,7 @@
 
     function initSearch() {
       const select = document.getElementById('searchParticipant');
-      select.innerHTML = '<option value="">Todos los participantes</option>' + participantsData.map(p => '<option value="' + p.participant + '">' + p.participant + '</option>').join('');
+      select.innerHTML = '<option value="">Todos los participantes</option>' + participantsData.map(p => '<option value="' + sanitize(p.participant) + '">' + sanitize(p.participant) + '</option>').join('');
     }
 
     async function doSearch(page) {
@@ -469,7 +475,7 @@
         container.innerHTML = data.results.map(msg => {
           const date = new Date(msg.date);
           const dateStr = date.toLocaleDateString('es-ES') + ' ' + date.toLocaleTimeString('es-ES', {hour:'2-digit',minute:'2-digit'});
-          return '<div class="search-result-item"><span class="msg-participant">' + msg.participant + '</span> <span class="msg-date">' + dateStr + '</span><div class="msg-text">' + (msg.isSystem ? '<em style="color:#999">' + msg.text + '</em>' : msg.text) + '</div></div>';
+          return '<div class="search-result-item"><span class="msg-participant">' + sanitize(msg.participant) + '</span> <span class="msg-date">' + dateStr + '</span><div class="msg-text">' + sanitize(msg.text) + '</div></div>';
         }).join('');
         pagination.innerHTML = '';
         for (let i = 1; i <= data.totalPages && i <= 20; i++) {
@@ -514,7 +520,7 @@
           let html = '<table class="admin-table"><thead><tr><th>Email</th><th>Nombre</th><th>Registro</th><th></th></tr></thead><tbody>';
           users.forEach(u => {
             const date = new Date(u.createdAt).toLocaleDateString('es-ES');
-            html += '<tr><td>' + u.email + '</td><td>' + u.name + '</td><td>' + date + '</td><td><button class="btn-approve" onclick="approveUser(\'' + u._id + '\', this)">Aprobar</button></td></tr>';
+            html += '<tr><td>' + sanitize(u.email) + '</td><td>' + sanitize(u.name) + '</td><td>' + date + '</td><td><button class="btn-approve" onclick="approveUser(\'' + sanitize(u._id) + '\', this)">Aprobar</button></td></tr>';
           });
           html += '</tbody></table>';
           section.innerHTML += html;

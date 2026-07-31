@@ -1,1 +1,11 @@
 .vercel
+.env
+.env*.local
+node_modules/
+*.log
+*.err
+server.log
+server.err
+error.log
+test-conversation.txt
+uploads/

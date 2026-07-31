@@ -8,13 +8,17 @@ exports.verifyToken = verifyToken;
 exports.requireAuth = requireAuth;
 exports.adminOnly = adminOnly;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+function getSecret() {
+    const secret = process.env.JWT_SECRET;
+    if (!secret)
+        throw new Error('JWT_SECRET no configurado');
+    return secret;
+}
 function signToken(payload) {
-    const secret = process.env.JWT_SECRET || 'dev-secret-change-in-production';
-    return jsonwebtoken_1.default.sign(payload, secret, { expiresIn: '7d' });
+    return jsonwebtoken_1.default.sign(payload, getSecret(), { expiresIn: '7d' });
 }
 function verifyToken(token) {
-    const secret = process.env.JWT_SECRET || 'dev-secret-change-in-production';
-    return jsonwebtoken_1.default.verify(token, secret);
+    return jsonwebtoken_1.default.verify(token, getSecret());
 }
 function requireAuth(req, res, next) {
     const header = req.headers.authorization;
